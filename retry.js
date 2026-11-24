@@ -20,8 +20,10 @@ async function one(d){
  const dt=new W.DataTransfer();
  for(const p of d.imgs){const r=await fetch(base+p); if(!r.ok){log.push('img404 '+p); continue;} const b=await r.blob(); dt.items.add(new W.File([b],p.split('/').pop(),{type:'image/jpeg'}));}
  const nImg=dt.files.length; const fi=D.querySelector('input[type=file]'); fi.files=dt.files; ev(fi,'change');
- const cb=D.querySelector('input[placeholder="Type to search"]'); cb.focus(); vIn.call(cb,d.cat); ev(cb,'input');
- let opt=null; for(let k=0;k<40&&!opt;k++){await S(400); opt=[...D.querySelectorAll('[role=option]')].find(o=>o.innerText.split('\n')[0].trim()===d.cat)||null;}
+ [...D.querySelectorAll('button[aria-labelledby^="wt-tooltip"]')].forEach(b=>{try{b.click();}catch(e){}}); await S(500);
+ const cb=D.querySelector('input[placeholder="Type to search"]');
+ let opt=null;
+ for(let att=0;att<4&&!opt;att++){ cb.focus(); vIn.call(cb,''); ev(cb,'input'); await S(300); cb.focus(); vIn.call(cb,d.cat); ev(cb,'input'); for(let k=0;k<25&&!opt;k++){await S(400); opt=[...D.querySelectorAll('[role=option]')].find(o=>o.innerText.split('\n')[0].trim()===d.cat)||null;} }
  if(opt) opt.click(); else log.push('nocat');
  await S(1500);
  let tb=null; for(let k=0;k<20&&!tb;k++){await S(300); tb=D.getElementById('category-mixed-listing-type');}
