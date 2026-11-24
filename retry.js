@@ -1,7 +1,7 @@
 (async function(){
 if(window.__wcRetry) return 'already';
 window.__wcRetry=true;
-const S=ms=>new Promise(r=>setTimeout(r,ms));
+const S=ms=>new Promise(r=>{const k='r'+Math.random(); window.__twc[k]=r; window.__tw.postMessage([k,ms]);});
 const base='https://raw.githubusercontent.com/edneal2/wild-compass-listing-photos/main/';
 const A=await (await fetch(base+'listings.json?'+Date.now())).json();
 const H=await (await fetch(base+'listings_home.json?'+Date.now())).json();
