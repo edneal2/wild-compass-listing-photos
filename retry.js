@@ -1,6 +1,7 @@
 (async function(){
 if(window.__wcRetry) return 'already';
 window.__wcRetry=true;
+window.__wcRtStop=false;
 const S=ms=>new Promise(r=>{const k='r'+Math.random(); window.__twc[k]=r; window.__tw.postMessage([k,ms]);});
 const base='https://raw.githubusercontent.com/edneal2/wild-compass-listing-photos/main/';
 const A=await (await fetch(base+'listings.json?'+Date.now())).json();
@@ -20,7 +21,7 @@ async function one(d){
  for(const p of d.imgs){const r=await fetch(base+p); if(!r.ok){log.push('img404 '+p); continue;} const b=await r.blob(); dt.items.add(new W.File([b],p.split('/').pop(),{type:'image/jpeg'}));}
  const nImg=dt.files.length; const fi=D.querySelector('input[type=file]'); fi.files=dt.files; ev(fi,'change');
  const cb=D.querySelector('input[placeholder="Type to search"]'); cb.focus(); vIn.call(cb,d.cat); ev(cb,'input');
- let opt=null; for(let k=0;k<12&&!opt;k++){await S(400); opt=[...D.querySelectorAll('[role=option]')].find(o=>o.innerText.split('\n')[0].trim()===d.cat)||null;}
+ let opt=null; for(let k=0;k<40&&!opt;k++){await S(400); opt=[...D.querySelectorAll('[role=option]')].find(o=>o.innerText.split('\n')[0].trim()===d.cat)||null;}
  if(opt) opt.click(); else log.push('nocat');
  await S(1500);
  let tb=null; for(let k=0;k<20&&!tb;k++){await S(300); tb=D.getElementById('category-mixed-listing-type');}
