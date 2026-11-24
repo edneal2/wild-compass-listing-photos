@@ -9,7 +9,7 @@ const H=await (await fetch(base+'listings_home.json?'+Date.now())).json();
 let fr=document.getElementById('rtFrame');
 if(!fr){fr=document.createElement('iframe'); fr.id='rtFrame'; fr.style.cssText='position:fixed;right:0;bottom:0;width:1100px;height:800px;z-index:99999;background:#fff;border:3px solid #a6c'; document.body.appendChild(fr);}
 const status=s=>{localStorage.wcRtStatus=new Date().toLocaleTimeString()+' '+s;};
-const loadCreate=async()=>{fr.src='/your/shops/me/listing-editor/create?wc='+Date.now(); for(let k=0;k<60;k++){await S(500); try{ if(fr.contentDocument && fr.contentDocument.querySelector('input[placeholder="Type to search"]')) {await S(1200); return true;} }catch(e){} } return false;};
+const loadCreate=async()=>{fr.src='/your/shops/me/listing-editor/create?wc='+Date.now(); for(let k=0;k<150;k++){await S(500); try{ if(fr.contentDocument && fr.contentDocument.querySelector('input[placeholder="Type to search"]')) {await S(1200); return true;} }catch(e){} } return false;};
 async function one(d){
  const W=fr.contentWindow, D=fr.contentDocument; const log=[];
  const vIn=Object.getOwnPropertyDescriptor(W.HTMLInputElement.prototype,'value').set;
@@ -43,14 +43,14 @@ async function one(d){
  if(tagCount<d.tags.length) log.push('tags '+tagCount); if(nImg<d.imgs.length) log.push('imgs '+nImg);
  if(log.length) return {ok:false,log};
  const sb=[...D.querySelectorAll('button')].find(b=>b.innerText.trim()==='Save as draft'||b.innerText.trim()==='Save draft'); sb.click();
- for(let k=0;k<40;k++){await S(500); try{ if(/tools\/listings/.test(fr.contentWindow.location.pathname)) return {ok:true}; }catch(e){} }
+ for(let k=0;k<360;k++){await S(500); try{ if(/tools\/listings/.test(fr.contentWindow.location.pathname)) return {ok:true}; }catch(e){} }
  const errs=[...fr.contentDocument.querySelectorAll('[role=alert]')].map(e=>e.innerText.trim()).filter(Boolean).slice(0,3);
  return {ok:false,log:['nosave'],errs};
 }
 
 const map=JSON.parse(localStorage.wcIdMap||'{}');
 const keys=new Set([].concat(JSON.parse(localStorage.wcDone||'[]'),...['B','C','D','E'].map(n=>JSON.parse(localStorage['wcDone_'+n]||'[]')),JSON.parse(localStorage.wcDone2||'[]')));
-const todo=A.concat(H).filter(d=>!keys.has(d.sku+'|'+d.slug) && !map[d.sku]);
+const ex=new Set(JSON.parse(localStorage.wcExistingSkus||'[]')); const todo=A.concat(H).filter(d=>!keys.has(d.sku+'|'+d.slug) && !map[d.sku] && !ex.has(d.sku));
 localStorage.wcRtTodo=JSON.stringify(todo.map(d=>d.slug));
 const ok=[],bad=[];
 for(const d of todo){
