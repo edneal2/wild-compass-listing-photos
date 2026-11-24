@@ -35,10 +35,11 @@ async function one(x,id){
   const W=fr.contentWindow, D=fr.contentDocument;
   const sku=[...D.querySelectorAll('label')].find(l=>l.innerText.trim().startsWith('SKU')); const skuv=sku&&D.getElementById(sku.htmlFor)?D.getElementById(sku.htmlFor).value:'';
   if(skuv && skuv!==x.sku) return {ok:false,why:'skumismatch '+skuv};
-  if(!fs||!fs.fi) return {ok:false,why:'noinput'};
+  if(!fs) return {ok:false,why:'nobox'};
   const have=fs.box.innerText;
   const need=blobs.filter(([b])=>!have.includes(b));
   if(!need.length) return {ok:true,already:true};
+  if(!fs.fi) return {ok:false,why:'noinput'};
   const dt=new W.DataTransfer();
   for(const [b,bl] of need) dt.items.add(new W.File([bl],b,{type:b.endsWith('.pdf')?'application/pdf':(b.endsWith('.zip')?'application/zip':(bl.type||'application/octet-stream'))}));
   fs.fi.files=dt.files; fs.fi.dispatchEvent(new W.Event('change',{bubbles:true}));
