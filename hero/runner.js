@@ -35,9 +35,7 @@ window.wcRun = async function (qKey) {
       await S(1000);
       const fw = fr.contentWindow;
       if (REPL) {
-        const idOf = e => +((e.querySelector('img').src.match(/il_\w+\.(\d+)_/) || [])[1] || 0);
-        const ids = items.map(idOf); const newest = [...ids].sort((a, b) => b - a).slice(0, prevK);
-        if (newest.includes(ids[0]) && ids.length > prevK + 2) {
+        if ((prev === 'ok' || prev === 'replaced') && items.length > (E[6] || 3)) {
           const del = items[0].querySelector('[data-testid=image-delete-button]'); if (!del) throw 'nodel';
           del.click(); await S(800);
           const conf = [...d.querySelectorAll('button')].find(b => /^(Delete|Remove|Yes, delete)$/i.test(b.innerText.trim()) && b.offsetParent); if (conf) { conf.click(); await S(800); }
