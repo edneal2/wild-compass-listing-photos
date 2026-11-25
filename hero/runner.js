@@ -56,11 +56,11 @@ window.wcRun = async function (qKey) {
       for (let k = 0; k < 120; k++) { await S(500); cnt = sig().filter(x => /il_/.test(x)).length; if (cnt === n + K) break; }
       if (cnt !== n + K) throw 'upload ' + cnt;
       await S(1500);
-      const NEW = sig().slice(n, n + K);
+      const NEW = sig().slice(n, n + K); const ST = E[7] || 0;
       for (let j = 0; j < K; j++) {
-        for (let t = 0; t < 3 && sig()[j] !== NEW[j]; t++) {
+        for (let t = 0; t < 3 && sig()[ST + j] !== NEW[j]; t++) {
           const its = [...d.querySelectorAll('[aria-roledescription=sortable]')];
-          const src = its[sig().indexOf(NEW[j])], dst = its[j];
+          const src = its[sig().indexOf(NEW[j])], dst = its[ST + j];
           src.scrollIntoView({ block: 'center' }); await S(300);
           const a = src.getBoundingClientRect(), b = dst.getBoundingClientRect();
           const ax = a.left + a.width / 2, ay = a.top + a.height / 2, bx = b.left + b.width / 2, by = b.top + b.height / 2;
@@ -70,7 +70,15 @@ window.wcRun = async function (qKey) {
           for (let s = 1; s <= 15; s++) { const x = ax + (bx - ax) * s / 15, y = ay + (by - ay) * s / 15; P('pointermove', x, y, d); Mo('mousemove', x, y, d); await S(40); }
           await S(200); P('pointerup', bx, by, d); Mo('mouseup', bx, by, d); await S(1000);
         }
-        if (sig()[j] !== NEW[j]) throw 'reorder' + j;
+        if (sig()[ST + j] !== NEW[j]) throw 'reorder' + j;
+      }
+      if (E[8]) {
+        const ta = [...d.querySelectorAll('textarea')].find(t => /Description/i.test((d.querySelector('label[for="' + t.id + '"]') || {}).innerText || ''));
+        if (ta && !ta.value.includes(E[8].split('\n')[0])) {
+          const v = ta.value.includes('PLEASE NOTE') ? ta.value.replace('PLEASE NOTE', E[8] + '\n\nPLEASE NOTE') : ta.value + '\n\n' + E[8];
+          Object.getOwnPropertyDescriptor(fw.HTMLTextAreaElement.prototype, 'value').set.call(ta, v);
+          ta.dispatchEvent(new fw.Event('input', { bubbles: true })); ta.dispatchEvent(new fw.Event('change', { bubbles: true })); ta.dispatchEvent(new fw.Event('blur', { bubbles: true })); await S(600);
+        }
       }
       const pub = [...d.querySelectorAll('button')].find(e => e.innerText.trim() === 'Publish changes'); if (!pub) throw 'nopub';
       pub.click();
