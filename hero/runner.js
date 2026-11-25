@@ -36,6 +36,7 @@ window.wcRun = async function (qKey) {
       const fw = fr.contentWindow;
       if (REPL) {
         if ((prev === 'ok' || prev === 'replaced') && items.length > (E[6] || 3)) {
+          const ids = items.slice();
           const del = items[0].querySelector('[data-testid=image-delete-button]'); if (!del) throw 'nodel';
           del.click(); await S(800);
           const conf = [...d.querySelectorAll('button')].find(b => /^(Delete|Remove|Yes, delete)$/i.test(b.innerText.trim()) && b.offsetParent); if (conf) { conf.click(); await S(800); }
