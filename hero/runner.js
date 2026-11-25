@@ -11,7 +11,9 @@ window.wcRun = async function (qKey) {
     const [key, slug] = E; const lid = E[2] || M[key]; const FILES = E[3] || ['hero/' + slug + '.jpg']; const K = FILES.length;
     const done = JSON.parse(localStorage.wcHeroDone || '{}');
     const prev = String(done[key] || '');
-    if (prev === 'ok' || prev.startsWith('err2') || prev === 'noid' || prev === 'check') continue;
+    const REPL = E[4] === 'replace'; const prevK = E[5] || 1;
+    if (!REPL && (prev === 'ok' || prev.startsWith('err2') || prev === 'noid' || prev === 'check')) continue;
+    if (REPL && (prev === 'replaced' || prev.startsWith('err2'))) continue;
     window.wcCur = key;
     if (!lid) { done[key] = 'noid'; localStorage.wcHeroDone = JSON.stringify(done); continue; }
     let res = '';
@@ -31,7 +33,19 @@ window.wcRun = async function (qKey) {
       }
       if (!items.length) throw 'noitems';
       await S(1000);
-      const fw = fr.contentWindow; const n = items.length;
+      const fw = fr.contentWindow;
+      if (REPL) {
+        const idOf = e => +((e.querySelector('img').src.match(/il_\w+\.(\d+)_/) || [])[1] || 0);
+        const ids = items.map(idOf); const newest = [...ids].sort((a, b) => b - a).slice(0, prevK);
+        if (newest.includes(ids[0]) && ids.length > prevK + 2) {
+          const del = items[0].querySelector('[data-testid=image-delete-button]'); if (!del) throw 'nodel';
+          del.click(); await S(800);
+          const conf = [...d.querySelectorAll('button')].find(b => /^(Delete|Remove|Yes, delete)$/i.test(b.innerText.trim()) && b.offsetParent); if (conf) { conf.click(); await S(800); }
+          for (let k = 0; k < 20; k++) { items = [...d.querySelectorAll('[aria-roledescription=sortable]')].filter(e => e.querySelector('img')); if (items.length === ids.length - 1) break; await S(300); }
+          if (items.length !== ids.length - 1) throw 'delfail';
+        }
+      }
+      const n = items.length;
       const sig = () => [...d.querySelectorAll('[aria-roledescription=sortable]')].map(e => { const i = e.querySelector('img'); return i ? i.src.split('/').pop().split('?')[0] : 'x'; });
       const dt = new fw.DataTransfer();
       for (const fp of FILES) {
@@ -64,7 +78,7 @@ window.wcRun = async function (qKey) {
       pub.click();
       let ok = false;
       for (let k = 0; k < 120; k++) { await S(500); try { if (!fr.contentWindow.location.pathname.includes('listing-editor')) { ok = true; break; } } catch (e) { } }
-      res = ok ? 'ok' : 'check';   // 'check' = published state unknown, verify before retrying
+      res = ok ? (REPL ? 'replaced' : 'ok') : 'check';   // 'check' = published state unknown, verify before retrying
     } catch (e) { res = (prev.startsWith('err') ? 'err2:' : 'err:') + e; }
     const d2 = JSON.parse(localStorage.wcHeroDone || '{}'); d2[key] = res; localStorage.wcHeroDone = JSON.stringify(d2);
   }
