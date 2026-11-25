@@ -12,7 +12,7 @@ window.wcRun = async function (qKey) {
     const done = JSON.parse(localStorage.wcHeroDone || '{}');
     const prev = String(done[key] || '');
     const REPL = E[4] === 'replace'; const prevK = E[5] || 1;
-    if (!REPL && (prev === 'ok' || prev.startsWith('err2') || prev === 'noid' || prev === 'check')) continue;
+    if (!REPL && (prev === 'ok' || prev === 'replaced' || prev.startsWith('err2') || prev === 'noid' || prev === 'check')) continue;
     if (REPL && (prev === 'replaced' || prev.startsWith('err2'))) continue;
     window.wcCur = key;
     if (!lid) { done[key] = 'noid'; localStorage.wcHeroDone = JSON.stringify(done); continue; }
