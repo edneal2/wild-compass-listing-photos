@@ -50,7 +50,7 @@
 "section": "Christmas & Winter",
 "slots": {
 "hero": [
-"l10",
+"n15",
 1
 ],
 "preview": [
@@ -70,7 +70,7 @@
 1
 ],
 "preview": [
-"l34",
+"l06",
 1
 ]
 }
@@ -118,7 +118,7 @@
 1
 ],
 "preview": [
-"l10",
+"n26",
 0
 ]
 }
@@ -170,7 +170,7 @@
 "section": "Christmas & Winter",
 "slots": {
 "preview": [
-"l34",
+"n15",
 0
 ]
 }
@@ -246,8 +246,8 @@
 0
 ],
 "preview": [
-"l10",
-0
+"n33",
+1
 ]
 }
 },
@@ -274,8 +274,8 @@
 1
 ],
 "preview": [
-"l34",
-0
+"n39",
+1
 ]
 }
 },
@@ -318,7 +318,7 @@
 "section": "Christmas & Winter",
 "slots": {
 "hero": [
-"l34",
+"l16",
 1
 ],
 "preview": [
@@ -346,7 +346,7 @@
 "section": "Christmas & Winter",
 "slots": {
 "hero": [
-"l10",
+"l08",
 1
 ],
 "preview": [
@@ -382,7 +382,7 @@
 0
 ],
 "preview": [
-"l10",
+"n26",
 0
 ]
 }
@@ -394,8 +394,8 @@
 "section": "Christmas & Winter",
 "slots": {
 "hero": [
-"l34",
-1
+"l06",
+0
 ],
 "preview": [
 "l16",
@@ -442,7 +442,7 @@
 0
 ],
 "preview": [
-"l34",
+"n08",
 0
 ]
 }
@@ -514,7 +514,7 @@
 "section": "Christmas & Winter",
 "slots": {
 "hero": [
-"l10",
+"n33",
 1
 ],
 "preview": [
@@ -614,8 +614,8 @@
 "section": "Christmas & Winter",
 "slots": {
 "hero": [
-"l34",
-1
+"l16",
+0
 ],
 "preview": [
 "n26",
@@ -658,7 +658,7 @@
 "section": "Christmas & Winter",
 "slots": {
 "hero": [
-"l34",
+"l08",
 0
 ],
 "preview": [
@@ -702,7 +702,7 @@
 "section": "Christmas & Winter",
 "slots": {
 "preview": [
-"l10",
+"n39",
 1
 ]
 }
@@ -750,7 +750,7 @@
 0
 ],
 "preview": [
-"l10",
+"l24",
 0
 ]
 }
@@ -766,8 +766,8 @@
 0
 ],
 "preview": [
-"l34",
-0
+"n39",
+1
 ]
 }
 },
@@ -850,8 +850,8 @@
 "section": "Christmas & Winter",
 "slots": {
 "preview": [
-"l34",
-1
+"n15",
+0
 ]
 }
 },
@@ -878,7 +878,7 @@
 "section": "Christmas & Winter",
 "slots": {
 "cover": [
-"l10",
+"n26",
 0
 ],
 "preview": [
@@ -950,8 +950,8 @@
 "section": "Christmas & Winter",
 "slots": {
 "preview": [
-"l10",
-1
+"l06",
+0
 ]
 }
 },
@@ -998,8 +998,8 @@
 0
 ],
 "preview": [
-"l10",
-0
+"l08",
+1
 ]
 }
 },
