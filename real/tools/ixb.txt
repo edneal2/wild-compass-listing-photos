@@ -1,0 +1,8 @@
+0 /home/claude/env/boys/bedroom-with-wood-panel-headboard-and-sh.jpg
+1 /home/claude/env/boys/blank-frame-with-toys-and-light-in-nurse.jpg
+2 /home/claude/env/boys/comfortable-bedroom-with-study-desk-and.jpg
+3 /home/claude/env/boys/cozy-messy-teen-bedroom-with-industrial.jpg
+4 /home/claude/env/boys/interior-design-featuring-cacti-and-chal.jpg
+5 /home/claude/env/boys/light-filled-room-with-blank-picture-fra.jpg
+6 /home/claude/env/boys/minimalist-interior-with-blank-frame-on.jpg
+7 /home/claude/env/boys/modern-lived-in-bedroom-with-exposed-red.jpg
