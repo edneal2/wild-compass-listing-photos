@@ -32,7 +32,7 @@ for(const job of Q){
       const fi=[...d.querySelectorAll('input[name=listing-media-upload]')].find(f=>f.labels&&f.labels[0]&&/Add photos/.test(f.labels[0].innerText)); if(!fi) throw 'nofile';
       const dt=new fw.DataTransfer(); dt.items.add(new fw.File([blobs[i]],six[i].split('/').pop(),{type:'image/jpeg'}));
       fi.files=dt.files; fi.dispatchEvent(new fw.Event('change',{bubbles:true}));
-      let ok=false; for(let k=0;k<90;k++){await S(500); const s=sig(); if(s.length===n+i+1 && s.every(x=>!/^blob|x$/.test(x)) && getItems().every(e=>/etsystatic|il_/.test(e.querySelector('img').src))){ok=true;break;}}
+      let ok=false; for(let k=0;k<90;k++){await S(500); const s=sig(); if(s.length===n+i+1 && s.every(x=>x!=='x'&&!/^blob/.test(x)) && getItems().every(e=>/etsystatic|il_/.test(e.querySelector('img').src))){ok=true;break;}}
       if(!ok) throw 'upload'+i;
       await S(1200);
     }
