@@ -70,7 +70,7 @@ for(const job of Q){
     if(!gone) throw 'delstuck';
     await S(800);
     const want=old.slice(); want[bi]=newId;
-    if(sig().join()!==want.join()) throw 'order';
+    if(sig().join()!==want.join()) throw 'order:'+sig().map(x=>x===newId?'N':old.indexOf(x)).join(',');
     if(window.wcNoPublish){ res='ready-nopub'; } else {
       const pub=[...d.querySelectorAll('button')].find(e=>e.innerText.trim()==='Publish changes'); if(!pub) throw 'nopub';
       pub.click();

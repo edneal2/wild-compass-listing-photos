@@ -60,7 +60,7 @@ for(const job of Q){
     }
     if(!moved) throw 'move'+sig().indexOf(newId)+'/'+bi;
     const want=[newId].concat(old);
-    if(sig().join()!==want.join()) throw 'order';
+    if(sig().join()!==want.join()) throw 'order:'+sig().map(x=>x===newId?'N':old.indexOf(x)).join(',');
     if(window.wcNoPublish){ res='ready-nopub'; } else {
       const pub=[...d.querySelectorAll('button')].find(e=>e.innerText.trim()==='Publish changes'); if(!pub) throw 'nopub';
       pub.click();
