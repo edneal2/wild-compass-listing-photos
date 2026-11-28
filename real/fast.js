@@ -47,13 +47,20 @@ for(const job of Q){
     // move new item from index n to index bi with keyboard (dnd-kit)
     const key=(el,code,k)=>{el.dispatchEvent(new fw.KeyboardEvent('keydown',{code,key:k,bubbles:true,cancelable:true}));};
     let moved=false;
-    for(let att=0;att<3&&!moved;att++){
+    const R=()=>getItems().map(e=>{const r=e.getBoundingClientRect();return {l:r.left,t:r.top,r:r.right,b:r.bottom};});
+    const corners=a=>[[a.l,a.t],[a.r,a.t],[a.l,a.b],[a.r,a.b]];
+    const cd=(a,b)=>{const A=corners(a),B=corners(b);let s=0;for(let i=0;i<4;i++)s+=Math.hypot(A[i][0]-B[i][0],A[i][1]-B[i][1]);return s;};
+    const plan=(rs,from,to)=>{const ks=[];let cur=from;for(let g=0;g<20&&cur!==to;g++){const c=rs[cur],t=rs[to];let dir,f;
+        if(t.t<c.t-5){dir='ArrowUp';f=x=>x.t<c.t-5;} else if(t.t>c.t+5){dir='ArrowDown';f=x=>x.t>c.t+5;} else if(t.l<c.l){dir='ArrowLeft';f=x=>x.l<c.l-5;} else {dir='ArrowRight';f=x=>x.l>c.l+5;}
+        let best=-1,bd=1e9;rs.forEach((x,i)=>{if(i===cur||!f(x))return;const dd=cd(c,x);if(dd<bd){bd=dd;best=i;}});if(best<0)break;ks.push(dir);cur=best;}
+      return cur===to?ks:null;};
+    for(let att=0;att<4&&!moved;att++){
       const cur=sig().indexOf(newId); if(cur===bi){moved=true;break;}
+      const ks=plan(R(),cur,bi); if(!ks) throw 'noplan';
       const el=getItems()[cur]; el.focus(); await S(300);
       key(el,'Space',' '); await S(700);
-      const steps=cur-bi;
-      for(let s=0;s<steps;s++){ key(d,'ArrowLeft','ArrowLeft'); await S(450); }
-      key(d,'Space',' '); await S(1500);
+      for(const k of ks){ key(d,k,k); await S(500); }
+      key(d,'Space',' '); await S(1600);
       if(sig().indexOf(newId)===bi) moved=true;
     }
     if(!moved) throw 'move'+sig().indexOf(newId)+'/'+bi;
