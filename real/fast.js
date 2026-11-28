@@ -31,8 +31,8 @@ for(const job of Q){
     const sig=()=>getItems().map(e=>{const i=e.querySelector('img');return i?(i.src.split('/').pop().split('?')[0].split('.')[1]||i.src.slice(-30)):'x'});
     const old=sig();
     const isigs=[];
-    for(let i=0;i<items.length;i++){const u=items[i].querySelector('img').src.replace(/il_[^/.]+(?=\.)/,'il_570xN'); let r=null; for(let t=0;t<3&&!r;t++){try{r=await fetch(u,{mode:'cors'});}catch(e){await S(3000);}} if(!r||!r.ok) throw 'ex'; isigs.push(await sigOf(await r.blob()));}
-    const usedIdx=new Set();let fb=false;
+    for(let i=0;i<items.length;i++){const u=items[i].querySelector('img').src.replace(/il_[^/.]+(?=\.)/,'il_570xN'); let r=null; for(let t=0;t<3&&!r;t++){try{r=await fetch(u,{mode:'cors',cache:'no-store'});}catch(e){await S(3000);}} if(!r||!r.ok) throw 'ex'; isigs.push(await sigOf(await r.blob()));}
+    const usedIdx=new Set();let fb=false,near=false;
     for(const j of jobs){let bi=-1,bd=99; isigs.forEach((g,i)=>{if(usedIdx.has(i))return;const dd=diff(j.osig,g);if(dd<bd){bd=dd;bi=i;}});
       if(bd>=6){ if(jobs.length>1) throw 'nomatch'+bd.toFixed(1);
         const L=isigs.length, ci=L-3, tiles=L>=5?diff(isigs[L-2],isigs[L-1]):99;
@@ -69,20 +69,22 @@ for(const job of Q){
         for(let w=0;w<4&&sig().filter(x=>x===newId).length>1;w++) await S(1000);
         if(sig().indexOf(newId)===tgt && sig().filter(x=>x===newId).length===1) moved=true;
       }
-      if(!moved) throw 'move'+sig().indexOf(newId)+'/'+tgt;
+      if(!moved){const ci=sig().indexOf(newId); if(ci>=2&&Math.abs(ci-tgt)===1&&sig().filter(x=>x===newId).length===1){near=true;} else throw 'move'+ci+'/'+tgt;}
       const before=sig().length; let gone=false;
       for(let tr=0;tr<3&&!gone;tr++){ const ix=sig().lastIndexOf(j.oldId); if(ix<0){gone=sig().length===before-1;break;} getItems()[ix].querySelector('clg-icon[name=trash]').closest('clg-icon-button').click(); for(let k=0;k<60;k++){await S(500); if(sig().length===before-1){gone=true;break;}} if(!gone) await S(4000);}
       if(!gone) throw 'delstuck';
       await S(800);
       want[j.bi]=newId;
     }
-    for(let w=0;w<6&&sig().join()!==want.join();w++) await S(1000);
-    if(sig().join()!==want.join()) throw 'order:'+sig().map(x=>want.indexOf(x)).join(',');
+    const newIds=want.filter(x=>!old.includes(x));
+    const okOrder=()=>{const s=sig();if(s.length!==want.length)return false;if(s.join()===want.join())return true;if(!near)return false;const a=s.filter(x=>!newIds.includes(x)),b=want.filter(x=>!newIds.includes(x));return a.join()===b.join()&&s.indexOf(newIds[0])>=2;};
+    for(let w=0;w<6&&!okOrder();w++) await S(1000);
+    if(!okOrder()) throw 'order:'+sig().map(x=>want.indexOf(x)).join(',');
     if(window.wcNoPublish){ res='ready-nopub'; } else {
       const pub=[...d.querySelectorAll('button')].find(e=>e.innerText.trim()==='Publish changes'); if(!pub) throw 'nopub';
       pub.click();
       let ok2=false; for(let k=0;k<60;k++){await S(500); try{ if(!fr.contentWindow.location.pathname.includes('listing-editor')){ok2=true;break;} }catch(e){} }
-      res=(ok2?'ok':'pubwait')+(fb?'-fb':'');
+      res=(ok2?'ok':'pubwait')+(fb?'-fb':'')+(near?'-near':'');
     }
   }catch(e){res='err:'+e;
     if(!window.wcNoPublish) try{const d=fr.contentDocument;const b=[...d.querySelectorAll('button')].find(b=>b.innerText.trim()==='Discard changes'); if(b){b.click(); await S(1500); const c=[...d.querySelectorAll('button')].filter(b=>b.innerText.trim()==='Discard').find(b=>b.getBoundingClientRect().width>0); if(c){c.click(); await S(2500);}}}catch(e2){}
