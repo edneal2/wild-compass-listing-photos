@@ -54,12 +54,13 @@ for(const job of Q){
       const ks=plan(R(),cur,bi); if(!ks) throw 'noplan';
       const el=getItems()[cur]; el.focus(); await S(300);
       key(el,'Space',' '); await S(700);
-      for(const k of ks){ key(d,k,k); await S(500); }
-      key(d,'Space',' '); await S(1600);
+      for(const k of ks){ key(d,k,k); await S(700); }
+      key(d,'Space',' '); await S(2500);
       if(sig().indexOf(newId)===bi) moved=true;
     }
     if(!moved) throw 'move'+sig().indexOf(newId)+'/'+bi;
     const want=[newId].concat(old);
+    for(let w=0;w<6&&sig().join()!==want.join();w++) await S(1000);
     if(sig().join()!==want.join()) throw 'order:'+sig().map(x=>x===newId?'N':old.indexOf(x)).join(',');
     if(window.wcNoPublish){ res='ready-nopub'; } else {
       const pub=[...d.querySelectorAll('button')].find(e=>e.innerText.trim()==='Publish changes'); if(!pub) throw 'nopub';
