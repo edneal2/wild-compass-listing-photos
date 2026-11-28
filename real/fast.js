@@ -89,7 +89,7 @@ for(const job of Q){
   }
   done[sku]=res; localStorage.wcFastDone=JSON.stringify(done); localStorage.wcFastLast=sku+' '+res+' '+new Date().toISOString();
   if(window.wcNoPublish) break;
-  await S(5500+Math.floor(Math.random()*3000));
+  await S(15000+Math.floor(Math.random()*5000));
 }
 localStorage.wcFastRunning='finished '+new Date().toISOString(); window.wcFastRunning=false;
 })(); 'started'
