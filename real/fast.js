@@ -35,8 +35,8 @@ for(const job of Q){
     const usedIdx=new Set();let fb=false;
     for(const j of jobs){let bi=-1,bd=99; isigs.forEach((g,i)=>{if(usedIdx.has(i))return;const dd=diff(j.osig,g);if(dd<bd){bd=dd;bi=i;}});
       if(bd>=6){ if(jobs.length>1) throw 'nomatch'+bd.toFixed(1);
-        let ci=-1,cdd=99; isigs.forEach((g,i)=>{if(i<2||i>4)return;const dd=diff(j.nsig,g);if(dd<cdd){cdd=dd;ci=i;}});
-        if(ci<0||cdd>=30) throw 'nomatch'+bd.toFixed(1)+'/'+cdd.toFixed(1); bi=ci; fb=true; }
+        const L=isigs.length, ci=L-3, tiles=L>=5?diff(isigs[L-2],isigs[L-1]):99;
+        if(ci<2||ci>5||tiles>=22) throw 'nomatch'+bd.toFixed(1)+'/t'+tiles.toFixed(1); bi=ci; fb=true; }
       usedIdx.add(bi); j.bi=bi; j.oldId=old[bi];}
     const fw=fr.contentWindow;
     const key=(el,code,k)=>{el.dispatchEvent(new fw.KeyboardEvent('keydown',{code,key:k,bubbles:true,cancelable:true}));};
