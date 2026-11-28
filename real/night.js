@@ -8,7 +8,7 @@ const log=m=>{localStorage.wcNightLog=(new Date().toISOString().slice(11,19)+' '
 const run=async(file,flag)=>{const code=await fetch(B+file+'?x='+Date.now()).then(r=>r.text());(0,eval)(code);await sleep(3000);while(window[flag]&&!window.wcNightAbort)await sleep(15000);};
 try{
   // 1. planner prepend (resumes from wcPreDone)
-  if(!localStorage.wcNightStage||localStorage.wcNightStage==='pre'){localStorage.wcNightStage='pre';log('start prepend');window.wcPreRunning=false;await run('prepend.js','wcPreRunning');log('prepend finished');await sleep(8000);localStorage.wcNightStage='rt';}
+  if(!localStorage.wcNightStage||localStorage.wcNightStage==='pre'){localStorage.wcNightStage='pre';log('start prepend');window.wcPre2Running=false;await run('prepend2.js','wcPre2Running');log('prepend finished');await sleep(8000);localStorage.wcNightStage='rt';}
   if(window.wcStop||window.wcNightAbort) throw 'stopped';
   // 2. road trip swap
   if(localStorage.wcNightStage==='rt'){if(!localStorage.wcSwapQ||!localStorage.wcRtLoaded){localStorage.wcSwapQ=JSON.stringify(await fetch(B+'queue_rt1127.json').then(r=>r.json()));localStorage.wcSwapDone='{}';localStorage.wcRtLoaded='1';}
