@@ -23,7 +23,7 @@ for(const job of Q){
     fr.src='/your/shops/me/listing-editor/edit/'+lid;
     let d=null,items=[];
     const getItems=()=>[...d.querySelectorAll('[aria-roledescription=sortable]')].filter(e=>e.querySelector('img'));
-    for(let k=0;k<80;k++){await S(500); d=fr.contentDocument; if(d&&d.readyState==='complete'&&d.location.href.includes('listing-editor')){items=getItems(); if(items.length) break;}}
+    for(let k=0;k<160;k++){await S(500); d=fr.contentDocument; if(d&&d.readyState==='complete'&&d.location.href.includes('listing-editor')){items=getItems(); if(items.length) break;}}
     if(!items.length) throw 'noitems';
     await S(1500); items=getItems();
     const n=items.length; if(2*n>20) throw 'count'+n;
@@ -41,7 +41,7 @@ for(const job of Q){
       const fi=[...d.querySelectorAll('input[name=listing-media-upload]')].find(f=>f.labels&&f.labels[0]&&/Add photos/.test(f.labels[0].innerText)); if(!fi) throw 'nofile';
       const dt=new fw.DataTransfer(); dt.items.add(new fw.File([blobs[i]],names[i],{type:'image/jpeg'}));
       fi.files=dt.files; fi.dispatchEvent(new fw.Event('change',{bubbles:true}));
-      let ok=false; for(let k=0;k<120;k++){await S(500); const s=sig(); if(s.length===n+i+1 && s.every(x=>x!=='x'&&!/^blob/.test(x)) && getItems().every(e=>/etsystatic|il_/.test(e.querySelector('img').src))){ok=true;break;}}
+      let ok=false; for(let k=0;k<240;k++){await S(500); const s=sig(); if(s.length===n+i+1 && s.every(x=>x!=='x'&&!/^blob/.test(x)) && getItems().every(e=>/etsystatic|il_/.test(e.querySelector('img').src))){ok=true;break;}}
       if(!ok) throw 'upload'+i;
       await S(1200);
     }
@@ -50,7 +50,7 @@ for(const job of Q){
     for(const oid of old){
       const idx=sig().indexOf(oid); if(idx<0) throw 'lost';
       const t=getItems()[idx].querySelector('clg-icon[name=trash]'); if(!t) throw 'notrash';
-      t.closest('clg-icon-button').click(); await S(1400);
+      const before=sig().length; let gone=false; for(let tr=0;tr<2&&!gone;tr++){ const it=getItems()[sig().indexOf(oid)]; if(!it){gone=sig().length===before-1;break;} it.querySelector('clg-icon[name=trash]').closest('clg-icon-button').click(); for(let k=0;k<60;k++){await S(500); if(sig().length===before-1){gone=true;break;}} } if(!gone) throw 'delstuck'+before; await S(800);
     }
     const fin=sig(); if(fin.join()!==neu.join()) throw 'final'+fin.length;
     if(window.wcNoPublish){ res='ready-nopub'; } else {
@@ -60,7 +60,7 @@ for(const job of Q){
       res=ok?'ok':'pubwait';
     }
   }catch(e){res='err:'+e;
-    try{const d=fr.contentDocument;const b=[...d.querySelectorAll('button')].find(b=>b.innerText.trim()==='Discard changes'); if(b){b.click(); await S(1500); const c=[...d.querySelectorAll('button')].filter(b=>b.innerText.trim()==='Discard').find(b=>b.getBoundingClientRect().width>0); if(c){c.click(); await S(2500);}}}catch(e2){}
+    if(!window.wcNoPublish) try{const d=fr.contentDocument;const b=[...d.querySelectorAll('button')].find(b=>b.innerText.trim()==='Discard changes'); if(b){b.click(); await S(1500); const c=[...d.querySelectorAll('button')].filter(b=>b.innerText.trim()==='Discard').find(b=>b.getBoundingClientRect().width>0); if(c){c.click(); await S(2500);}}}catch(e2){}
   }
   done[sku]=res; localStorage.wcSwapDone=JSON.stringify(done); localStorage.wcSwapLast=sku+' '+res+' '+new Date().toISOString();
   if(window.wcNoPublish) break;

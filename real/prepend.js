@@ -20,7 +20,7 @@ for(const job of Q){
     fr.src='/your/shops/me/listing-editor/edit/'+lid;
     let d=null,items=[];
     const getItems=()=>[...d.querySelectorAll('[aria-roledescription=sortable]')].filter(e=>e.querySelector('img'));
-    for(let k=0;k<80;k++){await S(500); d=fr.contentDocument; if(d&&d.readyState==='complete'&&d.location.href.includes('listing-editor')){items=getItems(); if(items.length) break;}}
+    for(let k=0;k<160;k++){await S(500); d=fr.contentDocument; if(d&&d.readyState==='complete'&&d.location.href.includes('listing-editor')){items=getItems(); if(items.length) break;}}
     if(!items.length) throw 'noitems';
     await S(1500); items=getItems();
     const n=items.length; if(n<1||2*n+1>20) throw 'count'+n;
@@ -33,30 +33,28 @@ for(const job of Q){
       const fi=[...d.querySelectorAll('input[name=listing-media-upload]')].find(f=>f.labels&&f.labels[0]&&/Add photos/.test(f.labels[0].innerText)); if(!fi) throw 'nofile';
       const dt=new fw.DataTransfer(); dt.items.add(new fw.File([blobs[i]],six[i].split('/').pop(),{type:'image/jpeg'}));
       fi.files=dt.files; fi.dispatchEvent(new fw.Event('change',{bubbles:true}));
-      let ok=false; for(let k=0;k<90;k++){await S(500); const s=sig(); if(s.length===n+i+1 && s.every(x=>x!=='x'&&!/^blob/.test(x)) && getItems().every(e=>/etsystatic|il_/.test(e.querySelector('img').src))){ok=true;break;}}
+      let ok=false; for(let k=0;k<240;k++){await S(500); const s=sig(); if(s.length===n+i+1 && s.every(x=>x!=='x'&&!/^blob/.test(x)) && getItems().every(e=>/etsystatic|il_/.test(e.querySelector('img').src))){ok=true;break;}}
       if(!ok) throw 'upload'+i;
       await S(1200);
     }
-    const s2=sig(); const neu=s2.slice(n); if(neu.length!==n+1) throw 'neu'+neu.length;
+    const s2=sig(); const neu=s2.slice(n); if(neu.length!==n+1) throw 'neu'+neu.length; if(new Set(neu).size!==neu.length) throw 'dupnew';
     if(s2.slice(0,n).join()!==old.join()) throw 'orderchanged';
-    for(const oid of old){
-      const idx=sig().indexOf(oid); if(idx<0) throw 'lost';
-      const t=getItems()[idx].querySelector('clg-icon[name=trash]'); if(!t) throw 'notrash';
-      t.closest('clg-icon-button').click(); await S(1400);
+    for(let oi=0;oi<old.length;oi++){ const oid=old[oi];
+      const before=sig().length; let gone=false; for(let tr=0;tr<3&&!gone;tr++){ const ix=sig().indexOf(oid); if(ix<0){gone=sig().length===before-1;break;} getItems()[ix].querySelector('clg-icon[name=trash]').closest('clg-icon-button').click(); for(let k=0;k<60;k++){await S(500); if(sig().length===before-1){gone=true;break;}} } if(!gone) throw 'delstuck'+before+' at '+oi; await S(800);
     }
     const fin=sig(); if(fin.join()!==neu.join()) throw 'final'+fin.length;
     if(window.wcNoPublish){ res='ready-nopub'; } else {
       const pub=[...d.querySelectorAll('button')].find(e=>e.innerText.trim()==='Publish changes'); if(!pub) throw 'nopub';
       pub.click();
-      let ok=false; for(let k=0;k<60;k++){await S(500); try{ if(!fr.contentWindow.location.pathname.includes('listing-editor')){ok=true;break;} }catch(e){} }
+      let ok=false; for(let k=0;k<180;k++){await S(500); try{ if(!fr.contentWindow.location.pathname.includes('listing-editor')){ok=true;break;} }catch(e){} }
       res=ok?'ok':'pubwait';
     }
   }catch(e){res='err:'+e;
-    try{const d=fr.contentDocument;const b=[...d.querySelectorAll('button')].find(b=>b.innerText.trim()==='Discard changes'); if(b){b.click(); await S(1500); const c=[...d.querySelectorAll('button')].filter(b=>b.innerText.trim()==='Discard').find(b=>b.getBoundingClientRect().width>0); if(c){c.click(); await S(2500);}}}catch(e2){}
+    if(!window.wcNoPublish) try{const d=fr.contentDocument;const b=[...d.querySelectorAll('button')].find(b=>b.innerText.trim()==='Discard changes'); if(b){b.click(); await S(1500); const c=[...d.querySelectorAll('button')].filter(b=>b.innerText.trim()==='Discard').find(b=>b.getBoundingClientRect().width>0); if(c){c.click(); await S(2500);}}}catch(e2){}
   }
   done[sku]=res; localStorage.wcPreDone=JSON.stringify(done); localStorage.wcPreLast=sku+' '+res+' '+new Date().toISOString();
   if(window.wcNoPublish) break;
   await S(6000+Math.floor(Math.random()*4000));
 }
 localStorage.wcPreRunning='finished '+new Date().toISOString(); window.wcPreRunning=false;
-})();
+})(); 'started'
